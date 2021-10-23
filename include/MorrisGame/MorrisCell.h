@@ -4,12 +4,12 @@
 
 namespace Morris
 {
-	class MorrisCell
+	/*class MorrisCell
 	{
 	public:
 		MorrisCellValue GetValue() const;
 
 	private:
-		MorrisCellValue _value = MorrisCellValue::Empty;
+		MorrisCellValue _value = MorrisCellValue::Empty;*/
 	};
 }

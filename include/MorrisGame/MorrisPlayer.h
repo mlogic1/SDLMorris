@@ -2,7 +2,7 @@
 
 namespace Morris
 {
-	enum class MorrisPlayerTurn
+	enum class MorrisPlayer
 	{
 		Player1 = 0,
 		Player2

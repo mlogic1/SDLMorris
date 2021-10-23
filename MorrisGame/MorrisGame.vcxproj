@@ -152,17 +152,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\MorrisGame\MorrisCell.cpp" />
     <ClCompile Include="..\src\MorrisGame\MorrisField.cpp" />
     <ClCompile Include="..\src\MorrisGame\MorrisGame.cpp" />
+    <ClCompile Include="..\src\MorrisGame\MorrisMarker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\MorrisGame\MorrisCell.h" />
     <ClInclude Include="..\include\MorrisGame\MorrisCellValue.h" />
     <ClInclude Include="..\include\MorrisGame\MorrisField.h" />
     <ClInclude Include="..\include\MorrisGame\MorrisGame.h" />
     <ClInclude Include="..\include\MorrisGame\MorrisGameState.h" />
-    <ClInclude Include="..\include\MorrisGame\MorrisPlayerTurn.h" />
+    <ClInclude Include="..\include\MorrisGame\MorrisMarker.h" />
+    <ClInclude Include="..\include\MorrisGame\MorrisMarkerColor.h" />
+    <ClInclude Include="..\include\MorrisGame\MorrisPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
