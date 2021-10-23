@@ -1,9 +1,6 @@
 #include <iostream>
-
-#define SDL_MAIN_HANDLED
-#include "SDL.h"
-
 #include "MorrisGame/MorrisGame.h"
+#include "MorrisSDL/SDLWindow.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,7 +9,27 @@ int main(int argc, char* argv[])
     bool one = game->PlaceMarketAtPoint(0, markers[0]);
     bool move = game->MoveMarkerToPoint(1, markers[0]);
 
+    SDLWindow* morrisWindow = nullptr;
+    try
+    {
+        morrisWindow = new SDLWindow();
+    }
+    catch (std::string& error)
+    {
+        std::cout << error << std::endl;
+        return -1;
+    }
+
+    while (morrisWindow->IsRunning())
+    {
+        morrisWindow->Update();
+    }
+
     delete game;
     std::cout << "Hello World!\n";
+
+    
+
+    delete morrisWindow;
     return 0;
 }
