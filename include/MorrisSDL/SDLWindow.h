@@ -19,7 +19,7 @@ class SDLWindow
 		void Update();
 
 	private:
-		void HandleInput(const SDL_Event& event);
+		void HandleEvents(const SDL_Event& event);
 
 	private:
 		// Field* m_field = nullptr;

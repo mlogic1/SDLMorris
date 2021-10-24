@@ -9,12 +9,15 @@ class SDLSceneMainMenu final : public SDLScene
 		SDLSceneMainMenu();
 		~SDLSceneMainMenu();
 
-	protected:
+	private:
 		virtual void InternalUpdate(float dt) override;
 		virtual void InternalRender(SDL_Renderer& renderer) override;
 
+	private:
+		void OnPlayButtonPressed();
+		void OnQuitButtonPressed();
 
 	private:
-		Mix_Music* m_backgroundMusic = NULL;
+		Mix_Music* m_backgroundMusic = nullptr;
 };
 

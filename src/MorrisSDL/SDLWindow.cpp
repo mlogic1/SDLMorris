@@ -8,7 +8,7 @@ SDLWindow::SDLWindow()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	m_window = SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-	m_renderer = SDL_CreateRenderer(m_window, -1, 0);
+	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	if (m_window == nullptr || m_renderer == nullptr)
 	{
@@ -46,7 +46,7 @@ void SDLWindow::Update()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	HandleInput(event);
+	HandleEvents(event);
 
 	// delta
 	int thisTime = SDL_GetTicks();
@@ -63,7 +63,7 @@ void SDLWindow::Update()
 	SDL_RenderPresent(m_renderer);
 }
 
-void SDLWindow::HandleInput(const SDL_Event& event)
+void SDLWindow::HandleEvents(const SDL_Event& event)
 {
 	switch (event.type)
 	{
@@ -73,6 +73,26 @@ void SDLWindow::HandleInput(const SDL_Event& event)
 			{
 				m_isRunning = false;
 			}
+
+			m_currentScene->OnKeyPressed(event.key.keysym.sym);
+			break;
+		}
+
+		case SDL_KEYUP:
+		{
+			m_currentScene->OnKeyReleased(event.key.keysym.sym);
+			break;
+		}
+
+		case SDL_MOUSEBUTTONDOWN:
+		{
+			m_currentScene->OnMousePressed(event.button.button);
+			break;
+		}
+
+		case SDL_MOUSEBUTTONUP:
+		{
+			m_currentScene->OnMouseReleased(event.button.button);
 			break;
 		}
 
