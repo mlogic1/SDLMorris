@@ -45,6 +45,9 @@
     <ClCompile Include="..\src\MorrisSDL\SDLTextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\MorrisSDL\SDLEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\MorrisGame\MorrisField.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\MorrisSDL\SDLAudioLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MorrisSDL\SDLEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

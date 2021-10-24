@@ -28,7 +28,7 @@ SDLWindow::SDLWindow()
 	}
 
 	SDLTextureLoader::GetInstance().SetReferences(m_window, m_renderer);
-	m_currentScene = std::make_unique<SDLSceneMainMenu>();	
+	m_currentScene = std::make_unique<SDLSceneMainMenu>();
 }
 
 SDLWindow::~SDLWindow()

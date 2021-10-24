@@ -2,9 +2,10 @@
 
 #define SDL_MAIN_HANDLED
 #include "SDL.h"
+#include "SDL_image.h"
 
 #include "SDLScene.h"
-#include "SDL_image.h"
+#include "SDLEvent.h"
 #include <memory>
 #include <string>
 
@@ -39,4 +40,3 @@ class SDLWindow
 		// delta time
 		int lastTime = 0;
 };
-

@@ -1,5 +1,3 @@
-#pragma once
-
 #include "MorrisSDL/SDLTextureLoader.h"
 
 SDL_Window* SDLTextureLoader::MAIN_WINDOW = nullptr;
