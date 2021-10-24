@@ -89,5 +89,8 @@
     <ClInclude Include="..\include\MorrisSDL\SDLSceneMainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\MorrisSDL\SDLAudioLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

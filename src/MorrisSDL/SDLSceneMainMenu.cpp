@@ -2,6 +2,7 @@
 #include "MorrisSDL/SDLTextureLoader.h"
 #include "MorrisSDL/SDLSprite.h"
 #include "MorrisSDL/SDLAnimatedSprite.h"
+#include "MorrisSDL/SDLAudioLoader.h"
 #include <memory>
 
 SDLSceneMainMenu::SDLSceneMainMenu()
@@ -15,11 +16,14 @@ SDLSceneMainMenu::SDLSceneMainMenu()
 	AddSprite(std::make_unique<SDLSprite>("title.png", titleRect));
 	AddSprite(std::make_unique<SDLSprite>("container_buttons.png", containerRect));
 	AddSprite(std::make_unique<SDLAnimatedSprite>("windmill.png", windmillRect, 1024, 128, 0.036f, 8, 128, 128));
+
+	m_backgroundMusic = SDLAudioLoader::GetInstance().LoadMusic("menubgm.ogg");
+	Mix_PlayMusic(m_backgroundMusic, -1);
 }
 
 SDLSceneMainMenu::~SDLSceneMainMenu()
 {
-
+	Mix_FreeMusic(m_backgroundMusic);
 }
 
 void SDLSceneMainMenu::InternalUpdate(float dt)

@@ -1,11 +1,12 @@
 #include "MorrisSDL/SDLWindow.h"
 #include "MorrisSDL/SDLSceneMainMenu.h"
 #include "MorrisSDL/SDLTextureLoader.h"
+#include <SDL_mixer.h>
 #include <string>
 
 SDLWindow::SDLWindow()
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	m_window = SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 
@@ -18,6 +19,12 @@ SDLWindow::SDLWindow()
 	{
 		const char* err = IMG_GetError();
 		throw std::string("Unable to init SDL IMG: " + std::string(err));
+	}
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		const char* err = Mix_GetError();
+		throw std::string("Unable to init audio: " + std::string(err));
 	}
 
 	SDLTextureLoader::GetInstance().SetReferences(m_window, m_renderer);
