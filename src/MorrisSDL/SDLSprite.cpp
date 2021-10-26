@@ -15,6 +15,18 @@ SDLSprite::~SDLSprite()
 	SDL_DestroyTexture(m_texture);
 }
 
+Uint8 SDLSprite::GetAlpha() const
+{
+	return m_alpha;
+}
+
+void SDLSprite::SetAlpha(Uint8 value)
+{
+	m_alpha = value;
+	SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureAlphaMod(m_texture, m_alpha);
+}
+
 void SDLSprite::Render(SDL_Renderer& renderer)
 {
 	SDL_RenderCopy(&renderer, m_texture, NULL, &m_posSize);

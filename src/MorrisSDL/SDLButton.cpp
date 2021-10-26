@@ -1,14 +1,17 @@
 #include "MorrisSDL/SDLButton.h"
 #include "MorrisSDL/SDLTextureLoader.h"
+#include "MorrisSDL/SDLAudioLoader.h"
 
-
-SDLButton::SDLButton(SDL_Rect posAndSize, const std::string& textureIdle, const std::string& textureHover, const std::string& texturePressed, std::function<void()> pressedCallback) :
+SDLButton::SDLButton(SDL_Rect posAndSize, const std::string& textureIdle, const std::string& textureHover, const std::string& texturePressed, std::function<void()> pressedCallback, const std::string& soundHover, const std::string& soundClick) :
 	m_posSize(posAndSize),
 	m_callback(pressedCallback)
 {
 	m_textureIdle = SDLTextureLoader::GetInstance().LoadImage(textureIdle);
 	m_textureHover = SDLTextureLoader::GetInstance().LoadImage(textureHover);
 	m_texturePressed = SDLTextureLoader::GetInstance().LoadImage(texturePressed);
+
+	m_soundHover = SDLAudioLoader::GetInstance().LoadChunk(soundHover);
+	m_soundClick = SDLAudioLoader::GetInstance().LoadChunk(soundClick);
 }
 
 SDLButton::~SDLButton()
@@ -16,6 +19,9 @@ SDLButton::~SDLButton()
 	SDL_DestroyTexture(m_textureIdle);
 	SDL_DestroyTexture(m_textureHover);
 	SDL_DestroyTexture(m_texturePressed);
+
+	Mix_FreeChunk(m_soundHover);
+	Mix_FreeChunk(m_soundClick);
 }
 
 void SDLButton::Update(float dt, int cursorX, int cursorY)
@@ -25,6 +31,7 @@ void SDLButton::Update(float dt, int cursorX, int cursorY)
 		if (m_currentState == SDLButtonState::IDLE)
 		{
 			m_currentState = SDLButtonState::HOVER;
+			Mix_PlayChannel(-1, m_soundHover, 0);
 		}
 	}
 	else
@@ -62,6 +69,8 @@ void SDLButton::Render(SDL_Renderer& renderer)
 
 void SDLButton::OnMousePressed(Uint8 button)
 {
+	if (button != SDL_BUTTON_LEFT)
+		return;
 	if (m_currentState == SDLButtonState::HOVER)
 	{
 		m_currentState = SDLButtonState::PRESSED;
@@ -70,12 +79,15 @@ void SDLButton::OnMousePressed(Uint8 button)
 
 void SDLButton::OnMouseReleased(Uint8 button)
 {
+	if (button != SDL_BUTTON_LEFT)
+		return;
 	int cursorX, cursorY;
 	SDL_GetMouseState(&cursorX, &cursorY);
 	bool isInbounds = IsCursorInBounds(cursorX, cursorY);
 	if (m_currentState == SDLButtonState::PRESSED && isInbounds)
 	{
 		m_currentState = SDLButtonState::HOVER;
+		Mix_PlayChannel(-1, m_soundClick, 0);
 		m_callback();
 	}
 	else

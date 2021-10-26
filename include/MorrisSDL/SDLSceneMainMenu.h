@@ -2,11 +2,12 @@
 
 #include "SDLScene.h"
 #include <SDL_mixer.h>
+#include <memory>
 
 class SDLSceneMainMenu final : public SDLScene
 {
 	public:
-		SDLSceneMainMenu();
+		SDLSceneMainMenu(SDLWindow& window);
 		~SDLSceneMainMenu();
 
 	private:

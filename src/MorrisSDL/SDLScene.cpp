@@ -1,8 +1,11 @@
 #include "MorrisSDL/SDLScene.h"
+#include "MorrisSDL/SDLWindow.h"
 
-SDLScene::SDLScene()
+SDLScene::SDLScene(SDLWindow& window) :
+	m_windowRef(window)
 {
-
+	SDL_Rect transitionBoxRect = { 0,0, 1280, 800 };
+	transitionBox = std::make_unique<SDLSprite>("black_block.jpg", transitionBoxRect);
 }
 
 SDLScene::~SDLScene()
@@ -23,6 +26,18 @@ void SDLScene::Update(float dt)
 		buttonPtr->Update(dt, cursorX, cursorY);
 
 	InternalUpdate(dt);
+	m_transitionCounter += dt;
+	transitionBox->Update(dt);
+	LerpTransitionBox(m_transitionBoxTargetAlpha);
+	if (m_isSwitchingScene)
+	{
+		if (m_transitionCounter > m_transitionDuration)
+		{
+			m_isSwitchingScene = false;
+			m_windowRef.SwitchScene(m_nextSceneName);
+		}
+	}
+
 }
 
 void SDLScene::Render(SDL_Renderer& renderer)
@@ -34,6 +49,7 @@ void SDLScene::Render(SDL_Renderer& renderer)
 		buttonPtr->Render(renderer);
 
 	InternalRender(renderer);
+	transitionBox->Render(renderer);
 }
 
 void SDLScene::OnKeyPressed(SDL_Keycode key)
@@ -74,6 +90,17 @@ void SDLScene::AddButton(std::unique_ptr<SDLButton> ptr)
 	m_buttons.emplace_back(std::move(ptr));
 }
 
+void SDLScene::SwitchScene(const std::string& sceneName)
+{
+	if ((sceneName != "MainMenu" && sceneName != "GameScene") || m_isSwitchingScene)
+		return;
+
+	m_isSwitchingScene = true;
+	m_transitionCounter = 0.0f;
+	m_transitionBoxTargetAlpha = 255;
+	m_nextSceneName = sceneName;
+}
+
 void SDLScene::InternalUpdate(float dt)
 {
 	// To be overriden if needed
@@ -102,4 +129,11 @@ void SDLScene::InternalOnMousePressed(Uint8 button)
 void SDLScene::InternalOnMouseReleased(Uint8 button)
 {
 	// To be overriden if needed
+}
+
+void SDLScene::LerpTransitionBox(Uint8 target)
+{	
+	Uint8 current = ((SDLSprite*)(transitionBox.get()))->GetAlpha();
+	current = current + (target - current) * (m_transitionCounter / m_transitionDuration);
+	((SDLSprite*)(transitionBox.get()))->SetAlpha(current);
 }

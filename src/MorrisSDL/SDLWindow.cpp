@@ -28,7 +28,7 @@ SDLWindow::SDLWindow()
 	}
 
 	SDLTextureLoader::GetInstance().SetReferences(m_window, m_renderer);
-	m_currentScene = std::make_unique<SDLSceneMainMenu>();
+	SwitchScene("MainMenu");
 }
 
 SDLWindow::~SDLWindow()
@@ -57,10 +57,21 @@ void SDLWindow::Update()
 	// render
 	SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(m_renderer);
-	//SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 	m_currentScene->Render(*m_renderer);
 
 	SDL_RenderPresent(m_renderer);
+}
+
+void SDLWindow::SwitchScene(const std::string& sceneName)
+{
+	if (sceneName == "MainMenu")
+	{
+		m_currentScene = std::make_unique<SDLSceneMainMenu>(*this);
+	}
+	else if (sceneName == "Game")
+	{
+		// m_currentScene = std::make_unique<SDLSceneGame>(*this);
+	}
 }
 
 void SDLWindow::HandleEvents(const SDL_Event& event)

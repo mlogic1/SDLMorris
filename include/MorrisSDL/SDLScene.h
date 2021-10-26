@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ISDLSprite.h"
+#include "SDLSprite.h"
 #include "SDLButton.h"
 #include <SDL.h>
 #include <functional>
@@ -8,10 +9,12 @@
 #include <string>
 #include <vector>
 
+class SDLWindow;
+
 class SDLScene
 {
 	public:
-		SDLScene();
+		SDLScene(SDLWindow& window);
 		virtual ~SDLScene() = 0;
 
 		void Update(float dt);
@@ -26,6 +29,8 @@ class SDLScene
 		void AddSprite(std::unique_ptr<ISDLSprite> ptr);
 		void AddButton(std::unique_ptr<SDLButton> ptr);
 
+		void SwitchScene(const std::string& sceneName);
+
 	protected:
 		virtual void InternalUpdate(float dt);
 		virtual void InternalRender(SDL_Renderer& renderer);
@@ -38,5 +43,15 @@ class SDLScene
 	private:
 		std::vector<std::unique_ptr<ISDLSprite>> m_sprites;
 		std::vector<std::unique_ptr<SDLButton>> m_buttons;
-};
 
+		// scene switching - this should be handled by a scene switcher class
+		SDLWindow& m_windowRef;
+		std::unique_ptr<SDLSprite> transitionBox;
+		Uint8 m_transitionBoxTargetAlpha = 0;
+		void LerpTransitionBox(Uint8 target);
+		std::string m_nextSceneName = "";
+		bool m_isSwitchingScene = false;
+
+		float m_transitionCounter = 0.0f;
+		float m_transitionDuration = 0.750f;
+};

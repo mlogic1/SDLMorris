@@ -17,6 +17,7 @@ class SDLWindow
 
 		bool IsRunning() const;
 		void Update();
+		void SwitchScene(const std::string& sceneName);
 
 	private:
 		void HandleEvents(const SDL_Event& event);
