@@ -13,6 +13,8 @@ class SDLSprite : public ISDLSprite
 		Uint8 GetAlpha() const;
 		void SetAlpha(Uint8 value);
 		virtual void Render(SDL_Renderer& renderer) override;
+		virtual const SDL_Rect& GetRect() const override;
+		void SetPosition(int x, int y) override;
 
 	protected:
 		SDL_Texture* m_texture = nullptr;

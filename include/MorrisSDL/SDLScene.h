@@ -26,8 +26,8 @@ class SDLScene
 		virtual void OnMouseReleased(Uint8 button);
 
 	protected:
-		void AddSprite(std::unique_ptr<ISDLSprite> ptr);
-		void AddButton(std::unique_ptr<SDLButton> ptr);
+		void AddSprite(std::shared_ptr<ISDLSprite> ptr);
+		void AddButton(std::shared_ptr<SDLButton> ptr);
 
 		void SwitchScene(const std::string& sceneName);
 
@@ -41,12 +41,12 @@ class SDLScene
 		virtual void InternalOnMouseReleased(Uint8 button);
 
 	private:
-		std::vector<std::unique_ptr<ISDLSprite>> m_sprites;
-		std::vector<std::unique_ptr<SDLButton>> m_buttons;
+		std::vector<std::shared_ptr<ISDLSprite>> m_sprites;
+		std::vector<std::shared_ptr<SDLButton>> m_buttons;
 
 		// scene switching - this should be handled by a scene switcher class
 		SDLWindow& m_windowRef;
-		std::unique_ptr<SDLSprite> transitionBox;
+		std::shared_ptr<SDLSprite> transitionBox;
 		Uint8 m_transitionBoxTargetAlpha = 0;
 		void LerpTransitionBox(Uint8 target);
 		std::string m_nextSceneName = "";

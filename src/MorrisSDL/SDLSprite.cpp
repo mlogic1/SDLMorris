@@ -32,3 +32,14 @@ void SDLSprite::Render(SDL_Renderer& renderer)
 	SDL_RenderCopy(&renderer, m_texture, NULL, &m_posSize);
 }
 
+const SDL_Rect& SDLSprite::GetRect() const
+{
+	return m_posSize;
+}
+
+void SDLSprite::SetPosition(int x, int y)
+{
+	m_posSize.x = x;
+	m_posSize.y = y;
+}
+

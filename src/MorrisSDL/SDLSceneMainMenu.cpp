@@ -14,8 +14,6 @@ SDLSceneMainMenu::SDLSceneMainMenu(SDLWindow& window) :
 
 	SDL_Rect playBtnRect = { 125, 350, 304, 85 };
 	SDL_Rect quitBtnRect = { 125, 550, 304, 85 };
-
-	SDL_Rect transitionBoxRect = { 0, 0, 1280, 800 };
 	
 	AddSprite(std::make_unique<SDLSprite>("menu.png", rectBG));
 	AddSprite(std::make_unique<SDLSprite>("title.png", titleRect));
@@ -47,7 +45,7 @@ void SDLSceneMainMenu::InternalRender(SDL_Renderer& renderer)
 
 void SDLSceneMainMenu::OnPlayButtonPressed()
 {
-	SwitchScene("MainMenu");
+	SwitchScene("GameScene");
 }
 
 void SDLSceneMainMenu::OnQuitButtonPressed()

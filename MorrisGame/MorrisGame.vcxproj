@@ -158,7 +158,10 @@
     <ClCompile Include="..\src\MorrisSDL\SDLAnimatedSprite.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLButton.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLEvent.cpp" />
+    <ClCompile Include="..\src\MorrisSDL\SDLMarkerView.cpp" />
+    <ClCompile Include="..\src\MorrisSDL\SDLMarkerViewMover.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLScene.cpp" />
+    <ClCompile Include="..\src\MorrisSDL\SDLSceneGame.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLSceneMainMenu.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLSprite.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLTextureLoader.cpp" />
@@ -177,7 +180,10 @@
     <ClInclude Include="..\include\MorrisSDL\SDLAudioLoader.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLButton.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLEvent.h" />
+    <ClInclude Include="..\include\MorrisSDL\SDLMarkerView.h" />
+    <ClInclude Include="..\include\MorrisSDL\SDLMarkerViewMover.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLScene.h" />
+    <ClInclude Include="..\include\MorrisSDL\SDLSceneGame.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLSceneMainMenu.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLSprite.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLTextureLoader.h" />

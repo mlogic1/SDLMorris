@@ -1,5 +1,6 @@
 #include "MorrisSDL/SDLWindow.h"
 #include "MorrisSDL/SDLSceneMainMenu.h"
+#include "MorrisSDL/SDLSceneGame.h"
 #include "MorrisSDL/SDLTextureLoader.h"
 #include <SDL_mixer.h>
 #include <string>
@@ -27,8 +28,11 @@ SDLWindow::SDLWindow()
 		throw std::string("Unable to init audio: " + std::string(err));
 	}
 
+	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);	// when this is enabled mouse release and click events are pretty slow...
+
 	SDLTextureLoader::GetInstance().SetReferences(m_window, m_renderer);
-	SwitchScene("MainMenu");
+	// SwitchScene("MainMenu");
+	SwitchScene("GameScene");
 }
 
 SDLWindow::~SDLWindow()
@@ -68,9 +72,9 @@ void SDLWindow::SwitchScene(const std::string& sceneName)
 	{
 		m_currentScene = std::make_unique<SDLSceneMainMenu>(*this);
 	}
-	else if (sceneName == "Game")
+	else if (sceneName == "GameScene")
 	{
-		// m_currentScene = std::make_unique<SDLSceneGame>(*this);
+		m_currentScene = std::make_unique<SDLSceneGame>(*this);
 	}
 }
 
