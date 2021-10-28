@@ -1,20 +1,27 @@
 #pragma once
 
 #include "SDLMarkerView.h"
+#include <SDL_mixer.h>
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
 
+/* TODO remove positioning markers from this class to game class callbacks, this class should
+only move the markers when grabbing, not set their final position */
+
 class SDLMarkerViewMover
 {
 	public:
-		SDLMarkerViewMover(const std::vector<std::shared_ptr<SDLMarkerView>>& markerViews);
+		SDLMarkerViewMover(const std::vector<std::shared_ptr<SDLMarkerView>>& markerViews, std::function<bool(const SDLMarkerView&, int)> tryMoveCallback);
 		~SDLMarkerViewMover();
 
 		void Update(float dt);
 
 		void MouseButtonPressed(Uint8 button);
 		void MouseButtonReleased(Uint8 button);
+
+		const std::vector<std::shared_ptr<SDLSprite>>& GetHitboxes() const;
 
 	private:
 		const std::vector<std::shared_ptr<SDLMarkerView>>& m_markerViews;
@@ -49,4 +56,13 @@ class SDLMarkerViewMover
 			{597, 675, 85, 85},	// 22
 			{916, 675, 85, 85}	// 23
 		};
+
+		std::function<bool(const SDLMarkerView&, int)> m_tryMoveCallback;
+		std::vector<std::shared_ptr<SDLSprite>> m_hitBoxes;
+
+		SDL_Rect m_grabbedMarkerRect = { 0, 0, 0, 0};
+
+		// audio
+		Mix_Chunk* m_successfulMoveSound = nullptr;
+		Mix_Chunk* m_failedMoveSound = nullptr;
 };

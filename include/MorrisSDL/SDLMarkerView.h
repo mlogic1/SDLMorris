@@ -10,5 +10,9 @@ class SDLMarkerView : public SDLSprite
 		SDLMarkerView(const std::string& textureName, SDL_Rect posAndSize, Morris::MorrisMarkerPtr marker);
 		~SDLMarkerView();
 
+		bool CanBeGrabbed() const;
+		const Morris::MorrisMarkerPtr& GetMarker() const;
+
 	private:
+		Morris::MorrisMarkerPtr m_markerPtr;
 };

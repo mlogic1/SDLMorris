@@ -9,6 +9,23 @@ namespace Morris
 		ResetGame();
 	}
 
+	MorrisGame::MorrisGame(
+		std::function<void(MorrisPlayer)> playerTurnChangedCallback,
+		std::function<void(MorrisGameState, MorrisGameState)> gameStateChangedCallback,
+		std::function<void(MorrisPlayer)> playerWonCallback,
+		std::function<void(const MorrisMarkerPtr)> markerEliminatedCallback,
+		std::function<void(int, const MorrisMarkerPtr)> markerPlacedCallback,
+		std::function<void(int, const MorrisMarkerPtr)> markerMovedCallback) :
+			_playerTurnChangedCallback(playerTurnChangedCallback),
+			_gameStateChangedCallback(gameStateChangedCallback),
+			_playerWonCallback(playerWonCallback),
+			_markerEliminatedCallback(markerEliminatedCallback),
+			_markerPlacedCallback(markerPlacedCallback),
+			_markerMovedCallback(markerMovedCallback)
+	{
+		ResetGame();
+	}
+
 	void MorrisGame::ResetGame()
 	{
 		_eliminatedMakers.clear();
@@ -166,12 +183,31 @@ namespace Morris
 				}
 				
 				_gameState = MorrisGameState::Playing;
+				// ChangePlayerTurn();	// this probably needs to be uncommented, test it out
 				break;
 			}
 
 			case MorrisGameState::Playing:
 			{
-				ChangePlayerTurn();
+				// check for 3 in a row for current player
+				// if player has 3 in a row, switch to removemarker state without changing the player turn
+				// after a player removes a marker then change the turn
+				if (_gameField.Has3InARow(_currentPlayerTurn))
+				{
+					if (_currentPlayerTurn == MorrisPlayer::Player1)
+					{
+						_gameState = MorrisGameState::RemoveP2Marker;
+					}
+					else
+					{
+						_gameState = MorrisGameState::RemoveP1Marker;
+					}
+				}
+				else
+				{
+					// if there's no 3 in a row, change the turn
+					ChangePlayerTurn();
+				}
 				break;
 			}
 			default:

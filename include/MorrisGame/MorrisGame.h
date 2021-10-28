@@ -14,6 +14,13 @@ namespace Morris
 	{
 	public:
 		MorrisGame();
+		MorrisGame(
+			std::function<void(MorrisPlayer)> playerTurnChangedCallback,
+			std::function<void(MorrisGameState, MorrisGameState)> gameStateChangedCallback,
+			std::function<void(MorrisPlayer)> playerWonCallback,
+			std::function<void(const MorrisMarkerPtr)> markerEliminatedCallback,
+			std::function<void(int, const MorrisMarkerPtr)> markerPlacedCallback,
+			std::function<void(int, const MorrisMarkerPtr)> markerMovedCallback);
 		~MorrisGame() = default;
 		void ResetGame();
 

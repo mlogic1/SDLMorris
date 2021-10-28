@@ -96,10 +96,24 @@ namespace Morris
 
 		for (const MorrisMarkerPtr marker : _cells)
 		{
-			if (marker->GetColor() == player)
+			if (marker && marker->GetColor() == player)
 				++count;
 		}
 		return count;
+	}
+
+	bool MorrisField::Has3InARow(MorrisPlayer player) const
+	{
+		for (const std::array<int, 3>&line : _lines)
+		{
+			const int pos1 = line[0], pos2 = line[1], pos3 = line[2];
+			if (_cells[pos1] && _cells[pos1]->GetColor() == player)
+				if (_cells[pos2] && _cells[pos2]->GetColor() == player)
+					if (_cells[pos3] && _cells[pos3]->GetColor() == player)
+						return true;
+		}
+
+		return false;
 	}
 	
 	bool MorrisField::AreAdjacent(int pos1, int pos2) const
