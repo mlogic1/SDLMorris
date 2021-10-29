@@ -1,10 +1,13 @@
 #pragma once
 
 #include "SDLScene.h"
-#include <SDL_mixer.h>
 #include "SDLMarkerView.h"
+#include "SDLMarkerViewMode.h"
 #include "SDLMarkerViewMover.h"
+#include "SDLMarkerViewEliminatorController.h"
+#include "SDLEliminationPanelView.h"
 #include "MorrisGame/MorrisGame.h"
+#include <SDL_mixer.h>
 #include <memory>
 
 class SDLSceneGame final : public SDLScene
@@ -21,6 +24,7 @@ class SDLSceneGame final : public SDLScene
 		virtual void InternalOnMouseReleased(Uint8 button)  override;
 
 		bool OnTryMoveMarker(const SDLMarkerView& markerView, int pos);
+		bool OnTryEliminateMarker(const Morris::MorrisMarkerPtr marker);
 
 		// callbacks from backend
 		void OnPlayerTurnChanged(Morris::MorrisPlayer player);
@@ -41,6 +45,10 @@ class SDLSceneGame final : public SDLScene
 		std::unique_ptr<Morris::MorrisGame> m_game;
 
 		std::unique_ptr<SDLMarkerViewMover> m_markerViewMover;
+		std::unique_ptr<SDLMarkerViewEliminatorController> m_eliminatorViewController;
+		std::unique_ptr<SDLEliminationPanelView> m_eliminationPanel;
 		std::vector<std::shared_ptr<SDLMarkerView>> m_markerViews;
+
+		MarkerViewMode m_markerMode = MarkerViewMode::Grabbing;
 };
 

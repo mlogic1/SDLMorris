@@ -26,6 +26,7 @@ namespace Morris
 
 		MorrisGameState GetGameState() const;
 		MorrisPlayer GetCurrentPlayerTurn() const;
+		const MorrisMarkerPtr GetMarkerAt(int pos) const;
 		const std::vector<MorrisMarkerPtr>& GetUnplacedMarkers() const;
 		
 		bool PlaceMarketAtPoint(int pos, const MorrisMarkerPtr marker);

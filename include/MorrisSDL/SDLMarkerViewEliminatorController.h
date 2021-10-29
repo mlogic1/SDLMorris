@@ -1,33 +1,29 @@
 #pragma once
 
-#include "SDLMarkerView.h"
-#include "SDLMarkerViewMode.h"
+#include "SDLSprite.h"
+#include "MorrisGame/MorrisGame.h"
+#include "MorrisSDL/SDLMarkerViewMode.h"
 #include <SDL_mixer.h>
 #include <functional>
 #include <memory>
-#include <string>
 #include <vector>
 
-/* TODO remove positioning markers from this class to game class callbacks, this class should
-only move the markers when grabbing, not set their final position */
-
-class SDLMarkerViewMover
+class SDLMarkerViewEliminatorController
 {
 	public:
-		SDLMarkerViewMover(const std::vector<std::shared_ptr<SDLMarkerView>>& markerViews, const MarkerViewMode& viewMode, std::function<bool(const SDLMarkerView&, int)> tryMoveCallback);
-		~SDLMarkerViewMover();
+		SDLMarkerViewEliminatorController(std::shared_ptr<SDLSprite>& eliminatorSprite, const Morris::MorrisGame& game, const MarkerViewMode& viewMode, std::function<bool(const Morris::MorrisMarkerPtr)> tryEliminateCallback);
+		~SDLMarkerViewEliminatorController();
 
 		void Update(float dt);
 
 		void MouseButtonPressed(Uint8 button);
 		void MouseButtonReleased(Uint8 button);
 
-		const std::vector<std::shared_ptr<SDLSprite>>& GetHitboxes() const;
+	private:
+		void OnHoverHitbox(int hitboxIndex);
+		void OnLeaveHitbox();
 
 	private:
-		const std::vector<std::shared_ptr<SDLMarkerView>>& m_markerViews;
-		std::shared_ptr<SDLMarkerView> m_currentlyHeldMarker = nullptr;
-
 		int m_currentlyHoveringHitboxIndex = -1;
 
 		const std::vector<SDL_Rect> m_fieldPosHitboxes =
@@ -58,13 +54,12 @@ class SDLMarkerViewMover
 			{916, 675, 85, 85}	// 23
 		};
 
+		std::function<bool(const Morris::MorrisMarkerPtr)> m_tryEliminateCallback;
+		const Morris::MorrisGame& m_gameRef;
 		const MarkerViewMode& m_currentViewModeRef;
-		std::function<bool(const SDLMarkerView&, int)> m_tryMoveCallback;
-		std::vector<std::shared_ptr<SDLSprite>> m_hitBoxes;
-
-		SDL_Rect m_grabbedMarkerRect = { 0, 0, 0, 0};
+		std::shared_ptr<SDLSprite> m_eliminatorSprite = nullptr;
 
 		// audio
-		Mix_Chunk* m_successfulMoveSound = nullptr;
-		Mix_Chunk* m_failedMoveSound = nullptr;
+		Mix_Chunk* m_eliminatorConfirmSound = nullptr;
+		Mix_Chunk* m_eliminatorHoverSound = nullptr;
 };

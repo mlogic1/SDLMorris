@@ -1,8 +1,9 @@
 #include "MorrisSDL/SDLMarkerViewMover.h"
 #include "MorrisSDL/SDLAudioLoader.h"
 
-SDLMarkerViewMover::SDLMarkerViewMover(const std::vector<std::shared_ptr<SDLMarkerView>>& markerViews, std::function<bool(const SDLMarkerView&, int)> tryMoveCallback) :
+SDLMarkerViewMover::SDLMarkerViewMover(const std::vector<std::shared_ptr<SDLMarkerView>>& markerViews, const MarkerViewMode& viewMode, std::function<bool(const SDLMarkerView&, int)> tryMoveCallback) :
 	m_markerViews(markerViews),
+	m_currentViewModeRef(viewMode),
 	m_tryMoveCallback(tryMoveCallback)
 {
 	for (const SDL_Rect& hitboxRect : m_fieldPosHitboxes)
@@ -30,6 +31,8 @@ void SDLMarkerViewMover::Update(float dt)
 
 
 		m_currentlyHoveringHitboxIndex = -1;
+		if (m_currentViewModeRef != MarkerViewMode::Grabbing)
+			return;
 		for (int i = 0; i < m_fieldPosHitboxes.size(); ++i)
 		{
 			const SDL_Rect& hitBox = m_fieldPosHitboxes[i];
@@ -55,6 +58,9 @@ void SDLMarkerViewMover::Update(float dt)
 
 void SDLMarkerViewMover::MouseButtonPressed(Uint8 button)
 {
+	if (m_currentViewModeRef != MarkerViewMode::Grabbing)
+		return;
+
 	if (button != SDL_BUTTON_LEFT)
 		return;
 
@@ -79,6 +85,9 @@ void SDLMarkerViewMover::MouseButtonPressed(Uint8 button)
 
 void SDLMarkerViewMover::MouseButtonReleased(Uint8 button)
 {
+	if (m_currentViewModeRef != MarkerViewMode::Grabbing)
+		return;
+
 	if (button != SDL_BUTTON_LEFT)
 		return;
 

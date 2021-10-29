@@ -70,7 +70,13 @@ SDLSceneGame::SDLSceneGame(SDLWindow& window) :
 		m_markerViews.emplace_back(std::move(markerView));
 	}
 
-	m_markerViewMover = std::make_unique<SDLMarkerViewMover>(m_markerViews, std::bind(&SDLSceneGame::OnTryMoveMarker, this, std::placeholders::_1, std::placeholders::_2));
+	m_markerViewMover = std::make_unique<SDLMarkerViewMover>(m_markerViews, m_markerMode, std::bind(&SDLSceneGame::OnTryMoveMarker, this, std::placeholders::_1, std::placeholders::_2));
+	std::shared_ptr<SDLSprite> markerEliminatorSprite = std::make_shared<SDLSprite>("marker_eliminate.png", SDL_Rect{ -150, -150, 104, 103 });
+	m_eliminatorViewController = std::make_unique<SDLMarkerViewEliminatorController>(markerEliminatorSprite, *m_game, m_markerMode, std::bind(&SDLSceneGame::OnTryEliminateMarker, this, std::placeholders::_1));
+	std::shared_ptr<SDLSprite> eliminatePanelP1 = std::make_shared<SDLSprite>("marker_eliminate_black.png", SDL_Rect{ 1285, 515, 226, 273 });
+	std::shared_ptr<SDLSprite> eliminatePanelP2 = std::make_shared<SDLSprite>("marker_eliminate_white.png", SDL_Rect{ 1285, 515, 226, 273 });
+
+	m_eliminationPanel = std::make_unique<SDLEliminationPanelView>(eliminatePanelP1, eliminatePanelP2);
 	
 	for (auto hitbox : m_markerViewMover->GetHitboxes())
 	{
@@ -82,6 +88,10 @@ SDLSceneGame::SDLSceneGame(SDLWindow& window) :
 	{
 		AddSprite(markerView);
 	}
+	
+	AddSprite(markerEliminatorSprite);
+	AddSprite(eliminatePanelP1);
+	AddSprite(eliminatePanelP2);
 
 #ifndef _DEBUG
 	Mix_PlayMusic(m_backgroundMusic, -1);
@@ -95,7 +105,10 @@ SDLSceneGame::~SDLSceneGame()
 
 void SDLSceneGame::InternalUpdate(float dt)
 {
-	m_markerViewMover->Update(dt);
+	// if (m_markerMode == MarkerMode::Grabbing)
+		m_markerViewMover->Update(dt);
+	
+		m_eliminatorViewController->Update(dt);
 }
 
 void SDLSceneGame::InternalRender(SDL_Renderer& renderer)
@@ -106,14 +119,13 @@ void SDLSceneGame::InternalRender(SDL_Renderer& renderer)
 void SDLSceneGame::InternalOnMousePressed(Uint8 button)
 {
 	m_markerViewMover->MouseButtonPressed(button);
+	m_eliminatorViewController->MouseButtonPressed(button);
 }
 
 void SDLSceneGame::InternalOnMouseReleased(Uint8 button)
 {
 	m_markerViewMover->MouseButtonReleased(button);
-
-	int cursorX, cursorY;
-	SDL_GetMouseState(&cursorX, &cursorY);
+	m_eliminatorViewController->MouseButtonReleased(button);
 }
 
 bool SDLSceneGame::OnTryMoveMarker(const SDLMarkerView& markerView, int pos)
@@ -131,6 +143,11 @@ bool SDLSceneGame::OnTryMoveMarker(const SDLMarkerView& markerView, int pos)
 	}
 }
 
+bool SDLSceneGame::OnTryEliminateMarker(const Morris::MorrisMarkerPtr marker)
+{
+	return m_game->EliminateMarker(marker);
+}
+
 #include <iostream>
 void SDLSceneGame::OnPlayerTurnChanged(Morris::MorrisPlayer player)
 {
@@ -140,7 +157,23 @@ void SDLSceneGame::OnPlayerTurnChanged(Morris::MorrisPlayer player)
 void SDLSceneGame::OnGameStateChanged(Morris::MorrisGameState previousState, Morris::MorrisGameState newState)
 {
 	std::cout << "game state changed" << std::endl;
-	// TODO switch between grabbing and eliminating mode for markers
+	
+	if (previousState == Morris::MorrisGameState::RemoveP1Marker || previousState == Morris::MorrisGameState::RemoveP2Marker)
+		m_eliminationPanel->Hide();
+
+	if (newState == Morris::MorrisGameState::RemoveP1Marker || newState == Morris::MorrisGameState::RemoveP2Marker)
+	{
+		m_markerMode = MarkerViewMode::Eliminating;
+		m_eliminationPanel->Show(m_game->GetCurrentPlayerTurn());
+	}
+	else if (newState == Morris::MorrisGameState::Playing)
+	{
+		m_markerMode = MarkerViewMode::Grabbing;
+	}
+	else
+	{
+		m_markerMode = MarkerViewMode::None;
+	}
 }
 
 void SDLSceneGame::OnPlayerWin(Morris::MorrisPlayer winningPlayer)

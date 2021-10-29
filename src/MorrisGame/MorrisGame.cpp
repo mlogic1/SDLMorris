@@ -51,6 +51,11 @@ namespace Morris
 		return _currentPlayerTurn;
 	}
 
+	const MorrisMarkerPtr MorrisGame::GetMarkerAt(int pos) const
+	{
+		return _gameField.GetAt(pos);
+	}
+
 	const std::vector<MorrisMarkerPtr>& MorrisGame::GetUnplacedMarkers() const
 	{
 		return _unplacedMarkers;
