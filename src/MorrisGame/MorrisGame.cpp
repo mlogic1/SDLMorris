@@ -173,14 +173,15 @@ namespace Morris
 			case MorrisGameState::RemoveP1Marker:
 			case MorrisGameState::RemoveP2Marker:
 			{
-				if (_gameField.GetMarkerCount(MorrisPlayer::Player1) < 3)
+				const int unplacedMarkersCount = _unplacedMarkers.size();
+				if (_gameField.GetMarkerCount(MorrisPlayer::Player1) < 3 && unplacedMarkersCount == 0)
 				{
 					_gameState = MorrisGameState::P2Wins;
 					TriggerCallback(_playerWonCallback, MorrisPlayer::Player2);
 					break;
 				}
 			
-				if (_gameField.GetMarkerCount(MorrisPlayer::Player2) < 3)
+				if (_gameField.GetMarkerCount(MorrisPlayer::Player2) < 3 && unplacedMarkersCount == 0)
 				{
 					_gameState = MorrisGameState::P1Wins;
 					TriggerCallback(_playerWonCallback, MorrisPlayer::Player1);
