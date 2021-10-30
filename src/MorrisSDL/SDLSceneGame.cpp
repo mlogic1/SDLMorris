@@ -185,6 +185,8 @@ void SDLSceneGame::OnPlayerWin(Morris::MorrisPlayer winningPlayer)
 void SDLSceneGame::OnMarkerEliminated(const Morris::MorrisMarkerPtr marker)
 {
 	std::cout << "marker elimited" << std::endl;
+
+	// m_markerViews
 }
 
 void SDLSceneGame::OnMarkerPlaced(int pos, const Morris::MorrisMarkerPtr marker)
