@@ -35,7 +35,7 @@ namespace Morris
 
 	private:
 		void ChangePlayerTurn();
-		void AfterMoveLogic();
+		void AfterMoveLogic(const MorrisMarkerPtr& marker);
 
 	private:
 		MorrisField _gameField;

@@ -88,7 +88,7 @@ namespace Morris
 		_unplacedMarkers.erase(result);
 
 		TriggerCallback(_markerPlacedCallback, pos, marker);
-		AfterMoveLogic();
+		AfterMoveLogic(marker);
 		return true;
 	}
 
@@ -131,7 +131,7 @@ namespace Morris
 			return false;
 
 		TriggerCallback(_markerMovedCallback, pos, marker);
-		AfterMoveLogic();
+		AfterMoveLogic(marker);
 		return true;
 	}
 
@@ -155,7 +155,7 @@ namespace Morris
 		_eliminatedMakers.emplace_back(marker);
 
 		TriggerCallback(_markerEliminatedCallback, marker);
-		AfterMoveLogic();
+		AfterMoveLogic(marker);
 		return true;
 	}
 	
@@ -165,7 +165,7 @@ namespace Morris
 		TriggerCallback(_playerTurnChangedCallback, _currentPlayerTurn);
 	}
 
-	void MorrisGame::AfterMoveLogic()
+	void MorrisGame::AfterMoveLogic(const MorrisMarkerPtr& marker)
 	{
 		const MorrisGameState prevGameState = _gameState;
 		switch (_gameState)
@@ -189,7 +189,7 @@ namespace Morris
 				}
 				
 				_gameState = MorrisGameState::Playing;
-				// ChangePlayerTurn();	// this probably needs to be uncommented, test it out
+				ChangePlayerTurn();
 				break;
 			}
 
@@ -198,7 +198,7 @@ namespace Morris
 				// check for 3 in a row for current player
 				// if player has 3 in a row, switch to removemarker state without changing the player turn
 				// after a player removes a marker then change the turn
-				if (_gameField.Has3InARow(_currentPlayerTurn))
+				if (_gameField.Has3InARow(marker))
 				{
 					if (_currentPlayerTurn == MorrisPlayer::Player1)
 					{

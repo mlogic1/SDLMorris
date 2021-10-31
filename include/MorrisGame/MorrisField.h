@@ -26,7 +26,7 @@ namespace Morris
 		bool JumpMarkerTo(int pos, const MorrisMarkerPtr marker);
 		bool EliminateMarker(const MorrisMarkerPtr marker);
 		int GetMarkerCount(MorrisPlayer player) const;
-		bool Has3InARow(MorrisPlayer player) const;
+		bool Has3InARow(const MorrisMarkerPtr marker) const;
 
 	private:
 		bool AreAdjacent(int pos1, int pos2) const;
@@ -77,7 +77,7 @@ namespace Morris
 			{6, 11, 15},
 			{1, 4, 7},
 			{16, 19, 22},
-			{8, 12, 18},
+			{8, 12, 17},
 			{5, 13, 20},
 			{2, 14, 23}
 		};

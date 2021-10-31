@@ -1,4 +1,5 @@
 #include "MorrisGame/MorrisField.h"
+#include <algorithm>
 #include <cmath>
 
 namespace Morris
@@ -102,14 +103,27 @@ namespace Morris
 		return count;
 	}
 
-	bool MorrisField::Has3InARow(MorrisPlayer player) const
+	bool MorrisField::Has3InARow(const MorrisMarkerPtr marker) const
 	{
-		for (const std::array<int, 3>&line : _lines)
+		const MorrisPlayer markerColor = marker->GetColor();
+		int markerPos = -1;
+		if (!GetMarkerPosition(markerPos, marker))
+			return false;
+
+		std::vector<std::array<int, 3>> validLines;
+
+		std::for_each(_lines.cbegin(), _lines.cend(), [&validLines, markerPos](std::array<int, 3> line)
+			{
+				bool lineValid = std::find(line.cbegin(), line.cend(), markerPos) != line.cend();
+				if (lineValid)
+					validLines.push_back(line);
+			});
+		for (std::array<int, 3> line : validLines)
 		{
 			const int pos1 = line[0], pos2 = line[1], pos3 = line[2];
-			if (_cells[pos1] && _cells[pos1]->GetColor() == player)
-				if (_cells[pos2] && _cells[pos2]->GetColor() == player)
-					if (_cells[pos3] && _cells[pos3]->GetColor() == player)
+			if (_cells[pos1] && _cells[pos1]->GetColor() == markerColor)
+				if (_cells[pos2] && _cells[pos2]->GetColor() == markerColor)
+					if (_cells[pos3] && _cells[pos3]->GetColor() == markerColor)
 						return true;
 		}
 

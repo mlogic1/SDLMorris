@@ -105,10 +105,8 @@ SDLSceneGame::~SDLSceneGame()
 
 void SDLSceneGame::InternalUpdate(float dt)
 {
-	// if (m_markerMode == MarkerMode::Grabbing)
-		m_markerViewMover->Update(dt);
-	
-		m_eliminatorViewController->Update(dt);
+	m_markerViewMover->Update(dt);
+	m_eliminatorViewController->Update(dt);
 }
 
 void SDLSceneGame::InternalRender(SDL_Renderer& renderer)
@@ -186,7 +184,15 @@ void SDLSceneGame::OnMarkerEliminated(const Morris::MorrisMarkerPtr marker)
 {
 	std::cout << "marker elimited" << std::endl;
 
-	// m_markerViews
+	// find the target marker
+	// move it outside of screen or to graveyard point
+	for (std::shared_ptr<SDLMarkerView>& markerView : m_markerViews)
+	{
+		if (markerView->GetMarker() == marker)
+		{
+			markerView->MoveToPosition(1300, 400);
+		}
+	}
 }
 
 void SDLSceneGame::OnMarkerPlaced(int pos, const Morris::MorrisMarkerPtr marker)
