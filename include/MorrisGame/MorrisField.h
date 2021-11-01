@@ -5,6 +5,10 @@
 #include <set>
 #include <vector>
 
+// TODO:
+// Missing feature: markers that form a mill can not be eliminated, keep track of mills and forbid elimination of milled markers
+// also research if this is actually true
+
 namespace Morris
 {
 	class MorrisField
@@ -30,6 +34,8 @@ namespace Morris
 
 	private:
 		bool AreAdjacent(int pos1, int pos2) const;
+		void FormMill();
+		// void UnformMill();
 
 	private:
 		std::array<MorrisMarkerPtr, 24> _cells;
@@ -81,6 +87,9 @@ namespace Morris
 			{5, 13, 20},
 			{2, 14, 23}
 		};
+
+		// TODO: implement mills, formed mills can not be destructed, only markers in that are not a part of a mill can be eliminated
+		std::vector<std::array<int, 3>> _mills;
 
 		friend class MorrisGame;
 	};

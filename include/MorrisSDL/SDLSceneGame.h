@@ -6,6 +6,7 @@
 #include "SDLMarkerViewMover.h"
 #include "SDLMarkerViewEliminatorController.h"
 #include "SDLEliminationPanelView.h"
+#include "SDLEndGamePanelView.h"
 #include "MorrisGame/MorrisGame.h"
 #include <SDL_mixer.h>
 #include <memory>
@@ -35,6 +36,11 @@ class SDLSceneGame final : public SDLScene
 		void OnMarkerPlaced(int pos, const Morris::MorrisMarkerPtr marker);
 		void OnMarkerMoved(int pos, const Morris::MorrisMarkerPtr marker);
 
+		// end game button callbacks
+		void OnPlayAgainClick();
+		void OnBackToMenuClick();
+		void OnQuitClick();
+
 	private:
 		Mix_Music* m_backgroundMusic = nullptr;
 
@@ -47,8 +53,8 @@ class SDLSceneGame final : public SDLScene
 		std::unique_ptr<SDLMarkerViewMover> m_markerViewMover;
 		std::unique_ptr<SDLMarkerViewEliminatorController> m_eliminatorViewController;
 		std::unique_ptr<SDLEliminationPanelView> m_eliminationPanel;
+		std::unique_ptr<SDLEndGamePanelView> m_endGamePanelView;
 		std::vector<std::shared_ptr<SDLMarkerView>> m_markerViews;
 
 		MarkerViewMode m_markerMode = MarkerViewMode::Grabbing;
 };
-

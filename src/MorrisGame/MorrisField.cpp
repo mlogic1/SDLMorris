@@ -134,4 +134,9 @@ namespace Morris
 	{
 		return _adjacents[pos1].find(pos2) != _adjacents[pos1].end();
 	}
+	
+	void MorrisField::FormMill()
+	{
+		// _mills
+	}
 }

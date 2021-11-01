@@ -26,6 +26,9 @@ SDLButton::~SDLButton()
 
 void SDLButton::Update(float dt, int cursorX, int cursorY)
 {
+	if (!m_isVisible)
+		return;
+
 	if (IsCursorInBounds(cursorX, cursorY))
 	{
 		if (m_currentState == SDLButtonState::IDLE)
@@ -67,10 +70,19 @@ void SDLButton::Render(SDL_Renderer& renderer)
 	SDL_RenderCopy(&renderer, m_currentTexture, NULL, &m_posSize);
 }
 
+void SDLButton::SetVisible(bool visible)
+{
+	m_isVisible = visible;
+}
+
 void SDLButton::OnMousePressed(Uint8 button)
 {
+	if (!m_isVisible)
+		return;
+
 	if (button != SDL_BUTTON_LEFT)
 		return;
+
 	if (m_currentState == SDLButtonState::HOVER)
 	{
 		m_currentState = SDLButtonState::PRESSED;
@@ -79,6 +91,9 @@ void SDLButton::OnMousePressed(Uint8 button)
 
 void SDLButton::OnMouseReleased(Uint8 button)
 {
+	if (!m_isVisible)
+		return;
+
 	if (button != SDL_BUTTON_LEFT)
 		return;
 	int cursorX, cursorY;

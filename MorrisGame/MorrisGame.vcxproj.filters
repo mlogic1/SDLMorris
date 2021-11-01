@@ -66,6 +66,9 @@
     <ClCompile Include="..\src\MorrisSDL\SDLMarkerViewEliminatorController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\MorrisSDL\SDLEndGamePanelView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\MorrisGame\MorrisField.h">
@@ -135,6 +138,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\MorrisSDL\SDLMarkerViewMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MorrisSDL\SDLEndGamePanelView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -93,6 +93,23 @@ SDLSceneGame::SDLSceneGame(SDLWindow& window) :
 	AddSprite(eliminatePanelP1);
 	AddSprite(eliminatePanelP2);
 
+	// end game dialog content
+	std::shared_ptr<SDLSprite> endPanelp1 = std::make_shared<SDLSprite>("dialog_end_p1_wins.png", SDL_Rect{ 404, 152, 473, 496 });
+	std::shared_ptr<SDLSprite> endPanelp2 = std::make_shared<SDLSprite>("dialog_end_p2_wins.png", SDL_Rect{ 404, 152, 473, 496 });
+
+	std::shared_ptr<SDLButton> btnPlayAgain = std::make_shared<SDLButton>(SDL_Rect{ 488, 315, 304, 85 }, "play_again_idle.png", "play_again_hover.png", "play_again_pressed.png", std::bind(&SDLSceneGame::OnPlayAgainClick, this), "hover.ogg", "action_success.ogg");
+	std::shared_ptr<SDLButton> btnBackToMenu = std::make_shared<SDLButton>(SDL_Rect{ 488, 420, 304, 85 }, "back_to_menu_idle.png", "back_to_menu_hover.png", "back_to_menu_pressed.png", std::bind(&SDLSceneGame::OnBackToMenuClick, this), "hover.ogg", "action_success.ogg");
+	std::shared_ptr<SDLButton> btnQuit = std::make_shared<SDLButton>(SDL_Rect{ 488, 510, 304, 85 }, "quit2_idle.png", "quit2_hover.png", "quit2_pressed.png", std::bind(&SDLSceneGame::OnQuitClick, this), "hover.ogg", "action_success.ogg");
+
+	m_endGamePanelView = std::make_unique<SDLEndGamePanelView>(endPanelp1, endPanelp2, btnPlayAgain, btnBackToMenu, btnQuit);
+
+	AddSprite(endPanelp1);
+	AddSprite(endPanelp2);
+
+	AddButton(btnPlayAgain);
+	AddButton(btnBackToMenu);
+	AddButton(btnQuit);
+
 #ifndef _DEBUG
 	Mix_PlayMusic(m_backgroundMusic, -1);
 #endif
@@ -178,6 +195,8 @@ void SDLSceneGame::OnPlayerWin(Morris::MorrisPlayer winningPlayer)
 {
 	const char* playerName = (winningPlayer == Morris::MorrisPlayer::Player1) ? "1" : "2";
 	std::cout << "game over: player " << playerName << " wins" << std::endl;
+
+	m_endGamePanelView->Show(winningPlayer);
 }
 
 void SDLSceneGame::OnMarkerEliminated(const Morris::MorrisMarkerPtr marker)
@@ -203,4 +222,22 @@ void SDLSceneGame::OnMarkerPlaced(int pos, const Morris::MorrisMarkerPtr marker)
 void SDLSceneGame::OnMarkerMoved(int pos, const Morris::MorrisMarkerPtr marker)
 {
 	std::cout << "marker moved" << std::endl;
+}
+
+void SDLSceneGame::OnPlayAgainClick()
+{
+	SwitchScene("GameScene");
+}
+
+void SDLSceneGame::OnBackToMenuClick()
+{
+	SwitchScene("MainMenu");
+}
+
+void SDLSceneGame::OnQuitClick()
+{
+	SDL_Event quitEvent;
+	quitEvent.type = SDL_QUIT;
+
+	SDL_PushEvent(&quitEvent);
 }

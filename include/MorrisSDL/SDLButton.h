@@ -22,6 +22,8 @@ class SDLButton
 		void Update(float dt, int cursorX, int cursorY);
 		void Render(SDL_Renderer& renderer);
 
+		void SetVisible(bool visible);
+
 		void OnMousePressed(Uint8 button);
 		void OnMouseReleased(Uint8 button);
 
@@ -29,6 +31,7 @@ class SDLButton
 		bool IsCursorInBounds(int cursorX, int cursorY) const;
 
 	private:
+		bool m_isVisible = true;
 		SDLButtonState m_currentState = SDLButtonState::IDLE;
 		SDL_Texture* m_textureIdle = nullptr;
 		SDL_Texture* m_textureHover = nullptr;

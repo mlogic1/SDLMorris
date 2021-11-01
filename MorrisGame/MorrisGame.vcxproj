@@ -158,6 +158,7 @@
     <ClCompile Include="..\src\MorrisSDL\SDLAnimatedSprite.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLButton.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLEliminationPanelView.cpp" />
+    <ClCompile Include="..\src\MorrisSDL\SDLEndGamePanelView.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLEvent.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLMarkerView.cpp" />
     <ClCompile Include="..\src\MorrisSDL\SDLMarkerViewEliminatorController.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="..\include\MorrisSDL\SDLAudioLoader.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLButton.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLEliminationPanelView.h" />
+    <ClInclude Include="..\include\MorrisSDL\SDLEndGamePanelView.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLEvent.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLMarkerView.h" />
     <ClInclude Include="..\include\MorrisSDL\SDLMarkerViewEliminatorController.h" />
