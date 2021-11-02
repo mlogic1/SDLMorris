@@ -38,6 +38,7 @@ namespace Morris
 			return false;
 
 		_cells[pos] = marker;
+		AfterMoveCheckMills(_cells[pos]);
 		return true;
 	}
 
@@ -52,19 +53,20 @@ namespace Morris
 			return false;
 
 		if (!AreAdjacent(cpos, pos))
-			return false;
+		return false;
 
 		// move and clear the previous spot
 		_cells[pos] = std::move(_cells[cpos]);
+		AfterMoveCheckMills(_cells[pos]);
 		return true;
 	}
-	
+
 	bool MorrisField::JumpMarkerTo(int pos, const MorrisMarkerPtr marker)
 	{
 		// jumps can only be made if that player has exactly 3 markers
 		if (GetMarkerCount(marker->GetColor()) != 3)
 			return false;
-	
+
 		// check if target spot is free
 		if (_cells[pos] != nullptr)
 			return false;
@@ -75,9 +77,10 @@ namespace Morris
 
 		if (_cells[pos] != nullptr)
 			return false;
-		
+
 		// move and clear the previous spot
 		_cells[pos] = std::move(_cells[cpos]);
+		AfterMoveCheckMills(_cells[pos]);
 		return true;
 	}
 
@@ -86,8 +89,9 @@ namespace Morris
 		int pos;
 		if (!GetMarkerPosition(pos, marker))
 			return false;
-		
+
 		_cells[pos] = nullptr;
+		// TODO if the marker was a part of a mill, unform the mill
 		return true;
 	}
 
@@ -129,14 +133,61 @@ namespace Morris
 
 		return false;
 	}
-	
+
+	const std::vector<std::array<MorrisMarkerPtr, 3>>& MorrisField::GetMills() const
+	{
+		return _mills;
+	}
+
 	bool MorrisField::AreAdjacent(int pos1, int pos2) const
 	{
 		return _adjacents[pos1].find(pos2) != _adjacents[pos1].end();
 	}
-	
-	void MorrisField::FormMill()
+
+	void MorrisField::AfterMoveCheckMills(const MorrisMarkerPtr marker)
 	{
-		// _mills
+		const MorrisPlayer markerColor = marker->GetColor();
+
+		// check if the marker was a part of a mill previously
+		for (std::array<MorrisMarkerPtr, 3> mill : _mills)
+		{
+			if (mill[0] == marker || mill[1] == marker || mill[2] == marker)
+			{
+				UnformMill(mill);
+			}
+		}
+
+		// check if the moved marker forms a mill
+		int cpos;
+		if (!GetMarkerPosition(cpos, marker))
+			return;
+
+		std::vector<std::array<int, 3>> validLines;
+		std::for_each(_lines.cbegin(), _lines.cend(), [&validLines, cpos](std::array<int, 3> line)
+			{
+				bool lineValid = std::find(line.cbegin(), line.cend(), cpos) != line.cend();
+				if (lineValid)
+					validLines.push_back(line);
+			});
+
+		
+		for (std::array<int, 3> line : validLines)
+		{
+			const int pos1 = line[0], pos2 = line[1], pos3 = line[2];
+			if (_cells[pos1] && _cells[pos1]->GetColor() == markerColor)
+				if (_cells[pos2] && _cells[pos2]->GetColor() == markerColor)
+					if (_cells[pos3] && _cells[pos3]->GetColor() == markerColor)
+						FormMill({_cells[pos1], _cells[pos2], _cells[pos3]});
+		}
+	}
+	
+	void MorrisField::FormMill(std::array<MorrisMarkerPtr, 3> line)
+	{
+		_mills.emplace_back(line);
+	}
+
+	void MorrisField::UnformMill(std::array<MorrisMarkerPtr, 3> mill)
+	{
+		std::remove(_mills.begin(), _mills.end(),  mill);
 	}
 }
