@@ -1,6 +1,7 @@
 #include "MorrisGame/MorrisGame.h"
 #include <algorithm>
 #include <cmath>
+#include <iterator>
 
 namespace Morris
 {
@@ -30,6 +31,7 @@ namespace Morris
 	{
 		_eliminatedMakers.clear();
 		_unplacedMarkers.clear();
+		_placedMarkers.clear();
 		for (int i = 0; i < 9; ++i)
 			_unplacedMarkers.emplace_back(std::make_shared<MorrisMarker>(MorrisPlayer::Player1));
 
@@ -86,6 +88,7 @@ namespace Morris
 
 		_gameField.SetAt(pos, marker);
 		_unplacedMarkers.erase(result);
+		_placedMarkers.push_back(marker);
 
 		TriggerCallback(_markerPlacedCallback, pos, marker);
 		AfterMoveLogic(marker);
@@ -153,12 +156,48 @@ namespace Morris
 			return false;
 
 		_eliminatedMakers.emplace_back(marker);
+		_placedMarkers.erase(std::remove(_placedMarkers.begin(), _placedMarkers.end(), marker), _placedMarkers.end());
 
 		TriggerCallback(_markerEliminatedCallback, marker);
 		AfterMoveLogic(marker);
 		return true;
 	}
 	
+	bool MorrisGame::CanPlayerMakeAMove(MorrisPlayer player) const
+	{
+		// if player has unplaced markers player can still make a move
+		const int64_t unplacedMarkerCount = std::count_if(_unplacedMarkers.cbegin(), _unplacedMarkers.cend(), [player](const MorrisMarkerPtr marker_) { return marker_->GetColor() == player; });
+		if (unplacedMarkerCount > 0)
+			return true;
+		
+		// check if any player marker has any adjencent free spots, if yes, return true, if false player loses
+		const int playerMarkerCount = _gameField.GetMarkerCount(player);
+		if (playerMarkerCount > 3)
+		{
+			std::vector<MorrisMarkerPtr> playerPlacedMarkers;
+			std::copy_if(_placedMarkers.cbegin(), _placedMarkers.cend(), std::back_inserter(playerPlacedMarkers), [player](MorrisMarkerPtr marker)
+			{
+				return marker->GetColor() == player;
+			});
+
+			bool playerCanMove = false;
+			for (const MorrisMarkerPtr& marker : playerPlacedMarkers)
+			{
+				if (_gameField.CanMarkerBeMoved(marker))
+				{
+					playerCanMove = true;
+					break;
+				}
+			}
+
+			if (!playerCanMove)	// player is stuck
+				return false;
+		}		
+		
+		// player can definitely make a move
+		return true;
+	}
+
 	void MorrisGame::ChangePlayerTurn()
 	{
 		_currentPlayerTurn = (_currentPlayerTurn == MorrisPlayer::Player1) ? MorrisPlayer::Player2 : MorrisPlayer::Player1;
@@ -189,7 +228,20 @@ namespace Morris
 				}
 				
 				_gameState = MorrisGameState::Playing;
-				ChangePlayerTurn();
+
+				// if the next player is unable to make a move, declare victory
+				MorrisPlayer oposingPlayer = (_currentPlayerTurn == MorrisPlayer::Player1) ? MorrisPlayer::Player2 : MorrisPlayer::Player1;
+				if (!CanPlayerMakeAMove(oposingPlayer))
+				{
+					// MorrisPlayer winningPlayer = (_currentPlayerTurn == MorrisPlayer::Player1) ? 
+					_gameState = (_currentPlayerTurn == MorrisPlayer::Player1) ? MorrisGameState::P1Wins : MorrisGameState::P2Wins;
+					TriggerCallback(_playerWonCallback, _currentPlayerTurn);
+				}
+				else
+				{
+					// if the move didn't form a mill, change the turn
+					ChangePlayerTurn();
+				}
 				break;
 			}
 
@@ -208,11 +260,23 @@ namespace Morris
 					{
 						_gameState = MorrisGameState::RemoveP1Marker;
 					}
+					// TODO: if all markers form mills, it's allowed to remove any marker
 				}
 				else
 				{
-					// if there's no 3 in a row, change the turn
-					ChangePlayerTurn();
+					// if the next player is unable to make a move, declare victory
+					MorrisPlayer oposingPlayer = (_currentPlayerTurn == MorrisPlayer::Player1) ? MorrisPlayer::Player2 : MorrisPlayer::Player1;
+					if (!CanPlayerMakeAMove(oposingPlayer))
+					{
+						// MorrisPlayer winningPlayer = (_currentPlayerTurn == MorrisPlayer::Player1) ? 
+						_gameState = (_currentPlayerTurn == MorrisPlayer::Player1) ? MorrisGameState::P1Wins : MorrisGameState::P2Wins;
+						TriggerCallback(_playerWonCallback, _currentPlayerTurn);
+					}
+					else
+					{
+						// if the move didn't form a mill, change the turn
+						ChangePlayerTurn();
+					}
 				}
 				break;
 			}

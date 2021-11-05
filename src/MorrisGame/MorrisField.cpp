@@ -151,6 +151,21 @@ namespace Morris
 		return _mills;
 	}
 
+	bool MorrisField::CanMarkerBeMoved(const MorrisMarkerPtr marker) const
+	{
+		int cpos;
+		if (!GetMarkerPosition(cpos, marker))
+			return false;
+
+		for (int adjacent : _adjacents[cpos])
+		{
+			if (_cells[adjacent] == nullptr)
+				return true;
+		}
+
+		return false;
+	}
+
 	bool MorrisField::AreAdjacent(int pos1, int pos2) const
 	{
 		return _adjacents[pos1].find(pos2) != _adjacents[pos1].end();
@@ -180,7 +195,6 @@ namespace Morris
 				validLines.push_back(line);
 		});
 
-		
 		for (std::array<int, 3> line : validLines)
 		{
 			const int pos1 = line[0], pos2 = line[1], pos3 = line[2];

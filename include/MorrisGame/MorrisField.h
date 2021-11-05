@@ -29,6 +29,7 @@ namespace Morris
 		bool Has3InARow(const MorrisMarkerPtr marker) const;
 		bool IsMarkerPartOfMill(const MorrisMarkerPtr marker) const;
 		const std::vector<std::array<MorrisMarkerPtr, 3>>& GetMills() const;
+		bool CanMarkerBeMoved(const MorrisMarkerPtr marker) const;
 
 	private:
 		bool AreAdjacent(int pos1, int pos2) const;

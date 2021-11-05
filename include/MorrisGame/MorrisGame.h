@@ -34,6 +34,7 @@ namespace Morris
 		bool EliminateMarker(const MorrisMarkerPtr marker);
 
 	private:
+		bool CanPlayerMakeAMove(MorrisPlayer player) const;
 		void ChangePlayerTurn();
 		void AfterMoveLogic(const MorrisMarkerPtr& marker);
 
@@ -43,6 +44,7 @@ namespace Morris
 		MorrisPlayer _currentPlayerTurn = MorrisPlayer::Player1;
 
 		std::vector<MorrisMarkerPtr> _unplacedMarkers;
+		std::vector<MorrisMarkerPtr> _placedMarkers;
 		std::vector<MorrisMarkerPtr> _eliminatedMakers;
 
 	private:
