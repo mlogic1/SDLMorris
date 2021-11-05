@@ -90,8 +90,10 @@ namespace Morris
 		if (!GetMarkerPosition(pos, marker))
 			return false;
 
+		if (IsMarkerPartOfMill(marker))
+			return false;
+
 		_cells[pos] = nullptr;
-		// TODO if the marker was a part of a mill, unform the mill
 		return true;
 	}
 
@@ -134,6 +136,16 @@ namespace Morris
 		return false;
 	}
 
+	bool MorrisField::IsMarkerPartOfMill(const MorrisMarkerPtr marker) const
+	{
+		for (const std::array<MorrisMarkerPtr, 3>& mill : _mills)
+		{
+			if (std::count(mill.cbegin(), mill.cend(), marker) > 0)
+				return true;
+		}
+		return false;
+	}
+
 	const std::vector<std::array<MorrisMarkerPtr, 3>>& MorrisField::GetMills() const
 	{
 		return _mills;
@@ -149,12 +161,10 @@ namespace Morris
 		const MorrisPlayer markerColor = marker->GetColor();
 
 		// check if the marker was a part of a mill previously
-		for (std::array<MorrisMarkerPtr, 3> mill : _mills)
+		for (const std::array<MorrisMarkerPtr, 3>& mill : _mills)
 		{
-			if (mill[0] == marker || mill[1] == marker || mill[2] == marker)
-			{
+			if (IsMarkerPartOfMill(marker))
 				UnformMill(mill);
-			}
 		}
 
 		// check if the moved marker forms a mill
@@ -164,11 +174,11 @@ namespace Morris
 
 		std::vector<std::array<int, 3>> validLines;
 		std::for_each(_lines.cbegin(), _lines.cend(), [&validLines, cpos](std::array<int, 3> line)
-			{
-				bool lineValid = std::find(line.cbegin(), line.cend(), cpos) != line.cend();
-				if (lineValid)
-					validLines.push_back(line);
-			});
+		{
+			bool lineValid = std::find(line.cbegin(), line.cend(), cpos) != line.cend();
+			if (lineValid)
+				validLines.push_back(line);
+		});
 
 		
 		for (std::array<int, 3> line : validLines)
@@ -188,6 +198,6 @@ namespace Morris
 
 	void MorrisField::UnformMill(std::array<MorrisMarkerPtr, 3> mill)
 	{
-		std::remove(_mills.begin(), _mills.end(),  mill);
+		_mills.erase(std::remove(_mills.begin(), _mills.end(), mill), _mills.end());
 	}
 }

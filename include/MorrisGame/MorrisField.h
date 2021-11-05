@@ -27,6 +27,7 @@ namespace Morris
 		bool EliminateMarker(const MorrisMarkerPtr marker);
 		int GetMarkerCount(MorrisPlayer player) const;
 		bool Has3InARow(const MorrisMarkerPtr marker) const;
+		bool IsMarkerPartOfMill(const MorrisMarkerPtr marker) const;
 		const std::vector<std::array<MorrisMarkerPtr, 3>>& GetMills() const;
 
 	private:
