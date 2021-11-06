@@ -2,7 +2,7 @@
 
 #include "SDLSprite.h"
 #include "MorrisGame/MorrisGame.h"
-#include "MorrisSDL/SDLMarkerViewMode.h"
+#include "SDLMarkerViewMode.h"
 #include <SDL_mixer.h>
 #include <functional>
 #include <memory>

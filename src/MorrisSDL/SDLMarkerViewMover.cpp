@@ -1,5 +1,5 @@
-#include "MorrisSDL/SDLMarkerViewMover.h"
-#include "MorrisSDL/SDLAudioLoader.h"
+#include "SDLMarkerViewMover.h"
+#include "SDLAudioLoader.h"
 
 SDLMarkerViewMover::SDLMarkerViewMover(const std::vector<std::shared_ptr<SDLMarkerView>>& markerViews, const MarkerViewMode& viewMode, std::function<bool(const SDLMarkerView&, int)> tryMoveCallback) :
 	m_markerViews(markerViews),

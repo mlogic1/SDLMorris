@@ -1,5 +1,5 @@
-#include "MorrisSDL/SDLSprite.h"
-#include "MorrisSDL/SDLTextureLoader.h"
+#include "SDLSprite.h"
+#include "SDLTextureLoader.h"
 
 SDLSprite::SDLSprite(const std::string& textureFile, SDL_Rect posAndSize) :
 	m_posSize(posAndSize)

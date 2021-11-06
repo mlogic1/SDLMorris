@@ -1,5 +1,5 @@
-#include "MorrisSDL/SDLScene.h"
-#include "MorrisSDL/SDLWindow.h"
+#include "SDLScene.h"
+#include "SDLWindow.h"
 
 SDLScene::SDLScene(SDLWindow& window) :
 	m_windowRef(window)

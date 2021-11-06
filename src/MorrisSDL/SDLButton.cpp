@@ -1,6 +1,6 @@
-#include "MorrisSDL/SDLButton.h"
-#include "MorrisSDL/SDLTextureLoader.h"
-#include "MorrisSDL/SDLAudioLoader.h"
+#include "SDLButton.h"
+#include "SDLTextureLoader.h"
+#include "SDLAudioLoader.h"
 
 SDLButton::SDLButton(SDL_Rect posAndSize, const std::string& textureIdle, const std::string& textureHover, const std::string& texturePressed, std::function<void()> pressedCallback, const std::string& soundHover, const std::string& soundClick) :
 	m_posSize(posAndSize),

@@ -1,8 +1,8 @@
-#include "MorrisSDL/SDLSceneMainMenu.h"
-#include "MorrisSDL/SDLTextureLoader.h"
-#include "MorrisSDL/SDLAnimatedSprite.h"
-#include "MorrisSDL/SDLAudioLoader.h"
-#include "MorrisSDL/SDLSprite.h"
+#include "SDLSceneMainMenu.h"
+#include "SDLTextureLoader.h"
+#include "SDLAnimatedSprite.h"
+#include "SDLAudioLoader.h"
+#include "SDLSprite.h"
 
 SDLSceneMainMenu::SDLSceneMainMenu(SDLWindow& window) :
 	SDLScene(window)

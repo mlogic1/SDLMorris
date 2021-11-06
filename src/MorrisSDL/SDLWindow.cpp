@@ -1,7 +1,7 @@
-#include "MorrisSDL/SDLWindow.h"
-#include "MorrisSDL/SDLSceneMainMenu.h"
-#include "MorrisSDL/SDLSceneGame.h"
-#include "MorrisSDL/SDLTextureLoader.h"
+#include "SDLWindow.h"
+#include "SDLSceneMainMenu.h"
+#include "SDLSceneGame.h"
+#include "SDLTextureLoader.h"
 #include <SDL_mixer.h>
 #include <string>
 

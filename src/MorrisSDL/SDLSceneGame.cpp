@@ -1,6 +1,6 @@
-#include "MorrisSDL/SDLSceneGame.h"
-#include "MorrisSDL/SDLTextureLoader.h"
-#include "MorrisSDL/SDLAudioLoader.h"
+#include "SDLSceneGame.h"
+#include "SDLTextureLoader.h"
+#include "SDLAudioLoader.h"
 
 SDLSceneGame::SDLSceneGame(SDLWindow& window) :
 	SDLScene(window)

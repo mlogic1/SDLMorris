@@ -1,4 +1,4 @@
-#include "MorrisSDL/SDLEvent.h"
+#include "SDLEvent.h"
 #include <SDL.h>
 
 namespace CustomEvents

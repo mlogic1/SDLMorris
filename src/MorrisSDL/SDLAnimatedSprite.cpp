@@ -1,4 +1,4 @@
-#include "MorrisSDL/SDLAnimatedSprite.h"
+#include "SDLAnimatedSprite.h"
 
 SDLAnimatedSprite::SDLAnimatedSprite(const std::string& textureFile, SDL_Rect posAndSize, int textureWidth, int textureHeight, float frameTime, int frameCount, int frameWidth, int frameHeight) :
 	SDLSprite(textureFile, posAndSize),

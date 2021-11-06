@@ -1,5 +1,5 @@
-#include "MorrisSDL/SDLMarkerViewEliminatorController.h"
-#include "MorrisSDL/SDLAudioLoader.h"
+#include "SDLMarkerViewEliminatorController.h"
+#include "SDLAudioLoader.h"
 
 SDLMarkerViewEliminatorController::SDLMarkerViewEliminatorController(std::shared_ptr<SDLSprite>& eliminatorSprite, const Morris::MorrisGame& game, const MarkerViewMode& viewMode, std::function<bool(const Morris::MorrisMarkerPtr)> tryEliminateCallback) :
 	m_eliminatorSprite(eliminatorSprite),

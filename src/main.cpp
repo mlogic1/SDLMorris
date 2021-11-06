@@ -1,6 +1,7 @@
 #include <iostream>
-#include "MorrisGame/MorrisGame.h"
-#include "MorrisSDL/SDLWindow.h"
+
+#include <MorrisGame/MorrisGame.h>
+#include "SDLWindow.h"
 
 int main(int argc, char* argv[])
 {
@@ -27,8 +28,6 @@ int main(int argc, char* argv[])
 
     delete game;
     std::cout << "Hello World!\n";
-
-    
 
     delete morrisWindow;
     return 0;

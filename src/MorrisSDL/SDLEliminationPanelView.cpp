@@ -1,5 +1,5 @@
-#include "MorrisSDL/SDLEliminationPanelView.h"
-#include "MorrisSDL/SDLAudioLoader.h"
+#include "SDLEliminationPanelView.h"
+#include "SDLAudioLoader.h"
 
 SDLEliminationPanelView::SDLEliminationPanelView(std::shared_ptr<SDLSprite>& panel1, std::shared_ptr<SDLSprite>& panel2) :
 	m_eliminatePanelP1(panel1),

@@ -1,5 +1,5 @@
-#include "MorrisSDL/SDLEndGamePanelView.h"
-#include "MorrisSDL/SDLAudioLoader.h"
+#include "SDLEndGamePanelView.h"
+#include "SDLAudioLoader.h"
 
 SDLEndGamePanelView::SDLEndGamePanelView(std::shared_ptr<SDLSprite>& p1winPanel, std::shared_ptr<SDLSprite>& p2winPanel, std::shared_ptr<SDLButton>& btnPlayAgain, std::shared_ptr<SDLButton>& btnBackToMenu, std::shared_ptr<SDLButton>& btnQuit) :
 	m_p1WinPanel(p1winPanel),
