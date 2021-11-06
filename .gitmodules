@@ -1,0 +1,3 @@
+[submodule "lib/lib-morris"]
+	path = lib/lib-morris
+	url = git@github.com:mlogic1/lib-morris.git
