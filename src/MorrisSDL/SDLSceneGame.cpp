@@ -13,14 +13,7 @@ SDLSceneGame::SDLSceneGame(SDLWindow& window) :
 
 	m_backgroundMusic = SDLAudioLoader::GetInstance().LoadMusic("menubgm.ogg");
 
-	m_game = std::make_unique<Morris::MorrisGame>(
-		std::bind(&SDLSceneGame::OnPlayerTurnChanged, this, std::placeholders::_1),
-		std::bind(&SDLSceneGame::OnGameStateChanged, this, std::placeholders::_1, std::placeholders::_2),
-		std::bind(&SDLSceneGame::OnPlayerWin, this, std::placeholders::_1),
-		std::bind(&SDLSceneGame::OnMarkerEliminated, this, std::placeholders::_1),
-		std::bind(&SDLSceneGame::OnMarkerPlaced, this, std::placeholders::_1, std::placeholders::_2),
-		std::bind(&SDLSceneGame::OnMarkerMoved, this, std::placeholders::_1, std::placeholders::_2)
-		);
+	m_game = std::make_unique<Morris::MorrisGame>(*this);
 
 	const std::vector<Morris::MorrisMarkerPtr>& allMarkers = m_game->GetUnplacedMarkers();
 
@@ -163,25 +156,26 @@ bool SDLSceneGame::OnTryEliminateMarker(const Morris::MorrisMarkerPtr marker)
 	return m_game->EliminateMarker(marker);
 }
 
-#include <iostream>
-void SDLSceneGame::OnPlayerTurnChanged(Morris::MorrisPlayer player)
+#include <iostream> // TODO: remove this
+
+void SDLSceneGame::OnPlayerTurnChangedCallback(Morris::MorrisPlayer player)
 {
 	std::cout << "Player turn changed" << std::endl;
 }
 
-void SDLSceneGame::OnGameStateChanged(Morris::MorrisGameState previousState, Morris::MorrisGameState newState)
+void SDLSceneGame::OnGamestateChangedCallback(Morris::MorrisGameState previousGamestate, Morris::MorrisGameState currentGameState)
 {
 	std::cout << "game state changed" << std::endl;
-	
-	if (previousState == Morris::MorrisGameState::RemoveP1Marker || previousState == Morris::MorrisGameState::RemoveP2Marker)
+
+	if (previousGamestate == Morris::MorrisGameState::RemoveP1Marker || previousGamestate == Morris::MorrisGameState::RemoveP2Marker)
 		m_eliminationPanel->Hide();
 
-	if (newState == Morris::MorrisGameState::RemoveP1Marker || newState == Morris::MorrisGameState::RemoveP2Marker)
+	if (currentGameState == Morris::MorrisGameState::RemoveP1Marker || currentGameState == Morris::MorrisGameState::RemoveP2Marker)
 	{
 		m_markerMode = MarkerViewMode::Eliminating;
 		m_eliminationPanel->Show(m_game->GetCurrentPlayerTurn());
 	}
-	else if (newState == Morris::MorrisGameState::Playing)
+	else if (currentGameState == Morris::MorrisGameState::Playing)
 	{
 		m_markerMode = MarkerViewMode::Grabbing;
 	}
@@ -191,15 +185,15 @@ void SDLSceneGame::OnGameStateChanged(Morris::MorrisGameState previousState, Mor
 	}
 }
 
-void SDLSceneGame::OnPlayerWin(Morris::MorrisPlayer winningPlayer)
+void SDLSceneGame::OnPlayerWinCallback(Morris::MorrisPlayer winner)
 {
-	const char* playerName = (winningPlayer == Morris::MorrisPlayer::Player1) ? "1" : "2";
+	const char* playerName = (winner == Morris::MorrisPlayer::Player1) ? "1" : "2";
 	std::cout << "game over: player " << playerName << " wins" << std::endl;
 
-	m_endGamePanelView->Show(winningPlayer);
+	m_endGamePanelView->Show(winner);
 }
 
-void SDLSceneGame::OnMarkerEliminated(const Morris::MorrisMarkerPtr marker)
+void SDLSceneGame::OnMarkerEliminatedCallback(const Morris::MorrisMarkerPtr marker)
 {
 	std::cout << "marker elimited" << std::endl;
 
@@ -214,12 +208,12 @@ void SDLSceneGame::OnMarkerEliminated(const Morris::MorrisMarkerPtr marker)
 	}
 }
 
-void SDLSceneGame::OnMarkerPlaced(int pos, const Morris::MorrisMarkerPtr marker)
+void SDLSceneGame::OnMarkerPlacedCallback(int pos, const Morris::MorrisMarkerPtr marker)
 {
 	std::cout << "marker placed" << std::endl;
 }
 
-void SDLSceneGame::OnMarkerMoved(int pos, const Morris::MorrisMarkerPtr marker)
+void SDLSceneGame::OnMarkerMovedCallback(int pos, const Morris::MorrisMarkerPtr marker)
 {
 	std::cout << "marker moved" << std::endl;
 }

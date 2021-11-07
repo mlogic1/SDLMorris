@@ -7,11 +7,12 @@
 #include "SDLMarkerViewEliminatorController.h"
 #include "SDLEliminationPanelView.h"
 #include "SDLEndGamePanelView.h"
+#include "MorrisGame/IMorrisEventListener.h"
 #include "MorrisGame/MorrisGame.h"
 #include <SDL_mixer.h>
 #include <memory>
 
-class SDLSceneGame final : public SDLScene
+class SDLSceneGame final : public SDLScene, public Morris::IMorrisEventListener
 {
 	public:
 		SDLSceneGame(SDLWindow& window);
@@ -28,13 +29,12 @@ class SDLSceneGame final : public SDLScene
 		bool OnTryEliminateMarker(const Morris::MorrisMarkerPtr marker);
 
 		// callbacks from backend
-		void OnPlayerTurnChanged(Morris::MorrisPlayer player);
-		void OnGameStateChanged(Morris::MorrisGameState previousState, Morris::MorrisGameState newState);
-		void OnPlayerWin(Morris::MorrisPlayer winningPlayer);
-
-		void OnMarkerEliminated(const Morris::MorrisMarkerPtr marker);
-		void OnMarkerPlaced(int pos, const Morris::MorrisMarkerPtr marker);
-		void OnMarkerMoved(int pos, const Morris::MorrisMarkerPtr marker);
+		virtual void OnPlayerTurnChangedCallback(Morris::MorrisPlayer player) override;
+		virtual void OnGamestateChangedCallback(Morris::MorrisGameState previousGamestate, Morris::MorrisGameState currentGameState) override;
+		virtual void OnPlayerWinCallback(Morris::MorrisPlayer winner) override;
+		virtual void OnMarkerEliminatedCallback(const Morris::MorrisMarkerPtr marker) override;
+		virtual void OnMarkerPlacedCallback(int pos, const Morris::MorrisMarkerPtr marker) override;
+		virtual void OnMarkerMovedCallback(int pos, const Morris::MorrisMarkerPtr marker) override;
 
 		// end game button callbacks
 		void OnPlayAgainClick();
