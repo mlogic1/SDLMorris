@@ -13,7 +13,7 @@ SDLSceneGame::SDLSceneGame(SDLWindow& window) :
 
 	m_backgroundMusic = SDLAudioLoader::GetInstance().LoadMusic("menubgm.ogg");
 
-	m_game = std::make_unique<Morris::MorrisGame>(*this);
+	m_game = std::make_unique<Morris::MorrisGame>(this);
 
 	const std::vector<Morris::MorrisMarkerPtr>& allMarkers = m_game->GetUnplacedMarkers();
 
