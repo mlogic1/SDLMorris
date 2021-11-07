@@ -33,8 +33,9 @@ void SDLMarkerViewEliminatorController::Update(float dt)
 			isInHitbox = true;
 			if (m_currentlyHoveringHitboxIndex != i)
 			{
-				if (m_gameRef.GetMarkerAt(i) && m_gameRef.GetMarkerAt(i)->GetColor() != m_gameRef.GetCurrentPlayerTurn())
-				OnHoverHitbox(i);
+				const Morris::MorrisMarkerPtr marker = m_gameRef.GetMarkerAt(i);
+				if (marker && marker->GetColor() != m_gameRef.GetCurrentPlayerTurn() && m_gameRef.CanMarkerBeEliminated(marker))
+					OnHoverHitbox(i);
 			}
 		}
 	}
