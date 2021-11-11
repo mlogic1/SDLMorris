@@ -13,7 +13,8 @@ SDLSceneGame::SDLSceneGame(SDLWindow& window) :
 
 	m_backgroundMusic = SDLAudioLoader::GetInstance().LoadMusic("menubgm.ogg");
 
-	m_game = std::make_unique<Morris::MorrisGame>(this);
+	m_logger = std::make_unique<SDLMorrisLogger>();
+	m_game = std::make_unique<Morris::MorrisGame>(this, m_logger.get());
 
 	const std::vector<Morris::MorrisMarkerPtr>& allMarkers = m_game->GetUnplacedMarkers();
 
@@ -160,12 +161,12 @@ bool SDLSceneGame::OnTryEliminateMarker(const Morris::MorrisMarkerPtr marker)
 
 void SDLSceneGame::OnPlayerTurnChangedCallback(Morris::MorrisPlayer player)
 {
-	std::cout << "Player turn changed" << std::endl;
+	// std::cout << "Player turn changed" << std::endl;
 }
 
 void SDLSceneGame::OnGamestateChangedCallback(Morris::MorrisGameState previousGamestate, Morris::MorrisGameState currentGameState)
 {
-	std::cout << "game state changed" << std::endl;
+	// std::cout << "game state changed" << std::endl;
 
 	if (previousGamestate == Morris::MorrisGameState::RemoveP1Marker || previousGamestate == Morris::MorrisGameState::RemoveP2Marker)
 		m_eliminationPanel->Hide();
@@ -195,7 +196,7 @@ void SDLSceneGame::OnPlayerWinCallback(Morris::MorrisPlayer winner)
 
 void SDLSceneGame::OnMarkerEliminatedCallback(const Morris::MorrisMarkerPtr marker)
 {
-	std::cout << "marker elimited" << std::endl;
+	// std::cout << "marker elimited" << std::endl;
 
 	// find the target marker
 	// move it outside of screen or to graveyard point
@@ -210,12 +211,12 @@ void SDLSceneGame::OnMarkerEliminatedCallback(const Morris::MorrisMarkerPtr mark
 
 void SDLSceneGame::OnMarkerPlacedCallback(int pos, const Morris::MorrisMarkerPtr marker)
 {
-	std::cout << "marker placed" << std::endl;
+	// std::cout << "marker placed" << std::endl;
 }
 
 void SDLSceneGame::OnMarkerMovedCallback(int pos, const Morris::MorrisMarkerPtr marker)
 {
-	std::cout << "marker moved" << std::endl;
+	// std::cout << "marker moved" << std::endl;
 }
 
 void SDLSceneGame::OnPlayAgainClick()

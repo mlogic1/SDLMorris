@@ -20,6 +20,7 @@ SET (HEADER_FILES
 	${INCLUDE_DIR}SDLEliminationPanelView.h
 	${INCLUDE_DIR}SDLEndGamePanelView.h
 	${INCLUDE_DIR}SDLEvent.h
+	${INCLUDE_DIR}SDLMorrisLogger.h
 	${INCLUDE_DIR}SDLMarkerView.h
 	${INCLUDE_DIR}SDLMarkerViewEliminatorController.h
 	${INCLUDE_DIR}SDLMarkerViewMode.h

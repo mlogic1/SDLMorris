@@ -7,6 +7,7 @@
 #include "SDLMarkerViewEliminatorController.h"
 #include "SDLEliminationPanelView.h"
 #include "SDLEndGamePanelView.h"
+#include "SDLMorrisLogger.h"
 #include "MorrisGame/IMorrisEventListener.h"
 #include "MorrisGame/MorrisGame.h"
 #include <SDL_mixer.h>
@@ -55,6 +56,7 @@ class SDLSceneGame final : public SDLScene, public Morris::IMorrisEventListener
 		std::unique_ptr<SDLEliminationPanelView> m_eliminationPanel;
 		std::unique_ptr<SDLEndGamePanelView> m_endGamePanelView;
 		std::vector<std::shared_ptr<SDLMarkerView>> m_markerViews;
+		std::unique_ptr<SDLMorrisLogger> m_logger;
 
 		MarkerViewMode m_markerMode = MarkerViewMode::Grabbing;
 };
