@@ -5,12 +5,6 @@
 
 int main(int argc, char* argv[])
 {
-    /*Morris::MorrisGame* game = new Morris::MorrisGame();
-    const std::vector<Morris::MorrisMarkerPtr>& markers = game->GetUnplacedMarkers();
-    bool one = game->PlaceMarketAtPoint(0, markers[0]);
-    bool move = game->MoveMarkerToPoint(1, markers[0]);
-    */
-
     SDLWindow* morrisWindow = nullptr;
     try
     {
@@ -26,9 +20,6 @@ int main(int argc, char* argv[])
     {
         morrisWindow->Update();
     }
-
-    // delete game;
-    std::cout << "Hello World!\n";
 
     delete morrisWindow;
     return 0;
