@@ -219,6 +219,16 @@ void SDLSceneGame::OnMarkerMovedCallback(int pos, const Morris::MorrisMarkerPtr 
 	// std::cout << "marker moved" << std::endl;
 }
 
+void SDLSceneGame::OnMillFormed(int pos1, int pos2, int pos3, Morris::MorrisPlayer player)
+{
+
+}
+
+void SDLSceneGame::OnMillUnFormed(int pos1, int pos2, int pos3, Morris::MorrisPlayer player)
+{
+
+}
+
 void SDLSceneGame::OnPlayAgainClick()
 {
 	SwitchScene("GameScene");

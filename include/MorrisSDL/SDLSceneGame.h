@@ -10,6 +10,7 @@
 #include "SDLMorrisLogger.h"
 #include "MorrisGame/IMorrisEventListener.h"
 #include "MorrisGame/MorrisGame.h"
+#include "MorrisGame/MorrisPlayer.h"
 #include <SDL_mixer.h>
 #include <memory>
 
@@ -36,6 +37,8 @@ class SDLSceneGame final : public SDLScene, public Morris::IMorrisEventListener
 		virtual void OnMarkerEliminatedCallback(const Morris::MorrisMarkerPtr marker) override;
 		virtual void OnMarkerPlacedCallback(int pos, const Morris::MorrisMarkerPtr marker) override;
 		virtual void OnMarkerMovedCallback(int pos, const Morris::MorrisMarkerPtr marker) override;
+		virtual void OnMillFormed(int pos1, int pos2, int pos3, Morris::MorrisPlayer player) override;
+		virtual void OnMillUnFormed(int pos1, int pos2, int pos3, Morris::MorrisPlayer player) override;
 
 		// end game button callbacks
 		void OnPlayAgainClick();
